@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MY VAULT</title>
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;padding:20px;
+ background:#10091c;color:#fff;
+ font-family:Arial,sans-serif;
+}
+main{max-width:650px;margin:auto}
+header{text-align:center;padding:25px 0}
+.logo{
+ width:120px;height:120px;object-fit:contain;
+ border-radius:22px;
+}
+h1{color:#c084fc;font-size:30px;margin:12px 0}
+header p,.muted{color:#b8a8ca}
+.card{
+ background:#211432;border:1px solid #59377b;
+ border-radius:18px;padding:18px;margin:16px 0;
+ box-shadow:0 5px 20px #0005;
+}
+h2{font-size:18px;color:#d8b4fe;margin-top:0}
+input,textarea,button{
+ width:100%;padding:13px;margin:7px 0;
+ border-radius:10px;font-size:15px;
+}
+input,textarea{
+ background:#140d20;color:white;
+ border:1px solid #68458b;
+}
+button{
+ background:#9333ea;color:white;border:0;
+ font-weight:bold;cursor:pointer;
+}
+button:active{background:#7e22ce}
+.note{font-size:12px;color:#b8a8ca}
+</style>
+</head>
+<body>
+<main>
+<header>
+ <img src="logo.png" class="logo" alt="MY VAULT logo">
+ <h1>MY VAULT</h1>
+ <p>Your Personal Digital Space</p>
+</header>
+
+<section class="card">
+ <h2>🔐 Connect Your Google Drive</h2>
+ <button>Continue with Google</button>
+ <p class="note">Connect your own Google account securely.</p>
+</section>
+
+<section class="card">
+ <h2>🖼️ My Images</h2>
+ <input type="file" accept="image/*" multiple>
+ <button>Open Image Gallery</button>
+</section>
+
+<section class="card">
+ <h2>🔗 My Links</h2>
+ <input placeholder="Link name">
+ <input placeholder="Website URL">
+ <button>Save Link</button>
+ <p class="note">Your saved links will appear here.</p>
+ <button>More Links</button>
+</section>
+
+<section class="card">
+ <h2>📱 My Numbers</h2>
+ <input placeholder="Name">
+ <input type="tel" placeholder="Number">
+ <button>Save Number</button>
+</section>
+
+<section class="card">
+ <h2>📁 My Files</h2>
+ <input type="file" multiple>
+ <button>Upload Files</button>
+</section>
+
+<section class="card">
+ <h2>📝 My Documents & Notes</h2>
+ <input placeholder="Document title">
+ <textarea rows="7" placeholder="Write anything here..."></textarea>
+ <button>Save Document</button>
+</section>
+
+</main>
+</body>
+</html>
