@@ -3,94 +3,414 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MY VAULT</title>
+
 <style>
-*{box-sizing:border-box}
-body{
- margin:0;padding:20px;
- background:#10091c;color:#fff;
- font-family:Arial,sans-serif;
+:root {
+  --bg:#10091d;
+  --panel:#1d1230;
+  --purple:#9147ff;
+  --light:#c6a4ff;
+  --text:#f5efff;
+  --muted:#a99bbd;
+  --danger:#ffbd70;
 }
-main{max-width:650px;margin:auto}
-header{text-align:center;padding:25px 0}
-.logo{
- width:120px;height:120px;object-fit:contain;
- border-radius:22px;
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
 }
-h1{color:#c084fc;font-size:30px;margin:12px 0}
-header p,.muted{color:#b8a8ca}
-.card{
- background:#211432;border:1px solid #59377b;
- border-radius:18px;padding:18px;margin:16px 0;
- box-shadow:0 5px 20px #0005;
+header {
+  text-align:center;
+  padding:26px 12px 18px;
 }
-h2{font-size:18px;color:#d8b4fe;margin-top:0}
-input,textarea,button{
- width:100%;padding:13px;margin:7px 0;
- border-radius:10px;font-size:15px;
+.logo {
+  width:65px;height:65px;
+  border-radius:20px;
+  background:linear-gradient(135deg,#a855f7,#5121a5);
+  display:grid;place-items:center;
+  margin:auto;
+  font-size:32px;
+  box-shadow:0 0 28px #9147ff70;
 }
-input,textarea{
- background:#140d20;color:white;
- border:1px solid #68458b;
+header h1 { letter-spacing:4px;margin:12px 0 5px; }
+header p { color:var(--muted);font-size:12px; }
+.warning {
+  margin:12px auto 20px;
+  max-width:750px;
+  background:#382512;
+  border:1px solid #9b672e;
+  color:#ffe0b0;
+  border-radius:12px;
+  padding:13px;
+  font-size:13px;
+  line-height:1.5;
 }
-button{
- background:#9333ea;color:white;border:0;
- font-weight:bold;cursor:pointer;
+main { max-width:850px;margin:auto;padding:12px; }
+.section {
+  background:var(--panel);
+  border:1px solid #38264f;
+  border-radius:16px;
+  padding:17px;
+  margin-bottom:16px;
 }
-button:active{background:#7e22ce}
-.note{font-size:12px;color:#b8a8ca}
+.section h2 { font-size:17px;margin:0 0 14px; }
+input,textarea {
+  width:100%;
+  background:#10091d;
+  border:1px solid #49345f;
+  border-radius:9px;
+  padding:12px;
+  color:white;
+  margin-bottom:9px;
+  font-size:14px;
+}
+textarea { min-height:100px;resize:vertical; }
+button,.file-label {
+  border:0;
+  border-radius:9px;
+  padding:11px 15px;
+  background:var(--purple);
+  color:white;
+  font-weight:bold;
+  cursor:pointer;
+  display:inline-block;
+  font-size:13px;
+}
+button.secondary { background:#38264f; }
+button.delete { background:#6e293e; }
+.items { margin-top:12px; }
+.item {
+  background:#281a3c;
+  border-radius:10px;
+  padding:12px;
+  margin-top:8px;
+  overflow-wrap:anywhere;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+}
+.item a { color:var(--light); }
+.item small { color:var(--muted);display:block;margin-top:4px; }
+.gallery {
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(105px,1fr));
+  gap:10px;
+  margin-top:12px;
+}
+.photo {
+  background:#281a3c;
+  border-radius:10px;
+  padding:7px;
+  min-width:0;
+}
+.photo img {
+  width:100%;
+  height:105px;
+  object-fit:cover;
+  border-radius:7px;
+}
+.photo p {
+  font-size:11px;
+  overflow-wrap:anywhere;
+}
+.hidden { display:none; }
+footer {
+  text-align:center;
+  color:var(--muted);
+  padding:20px;
+  font-size:11px;
+}
 </style>
 </head>
+
 <body>
-<main>
 <header>
- <img src="logo.png" class="logo" alt="MY VAULT logo">
- <h1>MY VAULT</h1>
- <p>Your Personal Digital Space</p>
+  <div class="logo">🔐</div>
+  <h1>MY VAULT</h1>
+  <p>YOUR PERSONAL DIGITAL SPACE</p>
 </header>
 
-<section class="card">
- <h2>🔐 Connect Your Google Drive</h2>
- <button>Continue with Google</button>
- <p class="note">Connect your own Google account securely.</p>
+<main>
+<div class="warning">
+  ⚠️ <b>Privacy & Safety Warning</b><br>
+  Files and images are stored in this browser on this device.
+  Add them at your own risk. Clearing browser data may permanently
+  delete saved content. Avoid storing sensitive or private information.
+</div>
+
+<section class="section">
+<h2>🖼️ My Images</h2>
+<input id="images" type="file" accept="image/*" multiple>
+<button onclick="saveImages()">Add Images</button>
+<div id="gallery" class="gallery"></div>
+<button id="galleryMore" class="secondary hidden" onclick="toggleGallery()">Show Gallery</button>
 </section>
 
-<section class="card">
- <h2>🖼️ My Images</h2>
- <input type="file" accept="image/*" multiple>
- <button>Open Image Gallery</button>
+<section class="section">
+<h2>🔗 My Links</h2>
+<input id="linkName" placeholder="Link name">
+<input id="linkUrl" placeholder="Paste website URL">
+<button onclick="addLink()">Save Link</button>
+<div id="links" class="items"></div>
+<button id="linkMore" class="secondary hidden" onclick="showAllLinks()">More</button>
 </section>
 
-<section class="card">
- <h2>🔗 My Links</h2>
- <input placeholder="Link name">
- <input placeholder="Website URL">
- <button>Save Link</button>
- <p class="note">Your saved links will appear here.</p>
- <button>More Links</button>
+<section class="section">
+<h2>📱 My Numbers</h2>
+<input id="numberName" placeholder="Custom name">
+<input id="numberValue" placeholder="Number">
+<button onclick="addNumber()">Save Number</button>
+<div id="numbers" class="items"></div>
 </section>
 
-<section class="card">
- <h2>📱 My Numbers</h2>
- <input placeholder="Name">
- <input type="tel" placeholder="Number">
- <button>Save Number</button>
+<section class="section">
+<h2>📁 My Files</h2>
+<input id="files" type="file" multiple>
+<button onclick="saveFiles()">Add Files</button>
+<div id="fileList" class="items"></div>
 </section>
 
-<section class="card">
- <h2>📁 My Files</h2>
- <input type="file" multiple>
- <button>Upload Files</button>
+<section class="section">
+<h2>📝 My Documents & Notes</h2>
+<input id="noteTitle" placeholder="Document title">
+<textarea id="noteText" placeholder="Write your text or notes here..."></textarea>
+<button onclick="addNote()">Save Note</button>
+<div id="notes" class="items"></div>
 </section>
-
-<section class="card">
- <h2>📝 My Documents & Notes</h2>
- <input placeholder="Document title">
- <textarea rows="7" placeholder="Write anything here..."></textarea>
- <button>Save Document</button>
-</section>
-
 </main>
+
+<footer>MY VAULT · Personal browser storage</footer>
+
+<script>
+const DB_NAME = "MyVaultDB";
+let db;
+
+const request = indexedDB.open(DB_NAME, 1);
+
+request.onupgradeneeded = e => {
+  db = e.target.result;
+  ["images","files"].forEach(name => {
+    if (!db.objectStoreNames.contains(name)) {
+      db.createObjectStore(name,{keyPath:"id",autoIncrement:true});
+    }
+  });
+};
+
+request.onsuccess = e => {
+  db = e.target.result;
+  renderAll();
+};
+
+request.onerror = () => alert("Storage could not be opened.");
+
+function getStore(name,mode="readonly") {
+  return db.transaction(name,mode).objectStore(name);
+}
+
+function addRecord(store,data,done) {
+  const tx = db.transaction(store,"readwrite");
+  tx.objectStore(store).add(data);
+  tx.oncomplete = done || (()=>{});
+  tx.onerror = ()=>alert("Could not save. Check available storage.");
+}
+
+function getRecords(store,done) {
+  const req = getStore(store).getAll();
+  req.onsuccess = ()=>done(req.result);
+}
+
+function deleteRecord(store,id,done) {
+  const tx = db.transaction(store,"readwrite");
+  tx.objectStore(store).delete(id);
+  tx.oncomplete = done;
+}
+
+function readData(key) {
+  try { return JSON.parse(localStorage.getItem(key)) || []; }
+  catch { return []; }
+}
+
+function writeData(key,data) {
+  localStorage.setItem(key,JSON.stringify(data));
+}
+
+function addLink() {
+  const name = linkName.value.trim();
+  let url = linkUrl.value.trim();
+  if(!name || !url) return alert("Enter link name and URL.");
+  if(!/^https?:\/\//i.test(url)) url="https://"+url;
+  try {
+    const parsed=new URL(url);
+    if(!["http:","https:"].includes(parsed.protocol)) throw Error();
+  } catch { return alert("Enter a valid website URL."); }
+
+  const data=readData("links");
+  data.push({name,url});
+  try { writeData("links",data); }
+  catch { return alert("Browser storage is full."); }
+  linkName.value="";linkUrl.value="";
+  renderLinks();
+}
+
+function renderLinks(all=false) {
+  const data=readData("links");
+  links.innerHTML="";
+  data.slice(0,all?data.length:5).forEach((x,i)=>{
+    const div=document.createElement("div");
+    div.className="item";
+    const info=document.createElement("div");
+    const a=document.createElement("a");
+    a.href=x.url;a.target="_blank";a.rel="noopener noreferrer";
+    a.textContent=x.name;
+    info.append(a);
+    const del=document.createElement("button");
+    del.className="delete";del.textContent="Delete";
+    del.onclick=()=>{
+      const list=readData("links");
+      list.splice(i,1);writeData("links",list);renderLinks(all);
+    };
+    div.append(info,del);links.append(div);
+  });
+  linkMore.classList.toggle("hidden",data.length<=5||all);
+}
+
+function showAllLinks(){renderLinks(true);}
+
+function addNumber() {
+  const name=numberName.value.trim();
+  const value=numberValue.value.trim();
+  if(!name||!value)return alert("Enter name and number.");
+  const data=readData("numbers");
+  data.push({name,value});
+  try {writeData("numbers",data);}
+  catch {return alert("Browser storage is full.");}
+  numberName.value="";numberValue.value="";
+  renderNumbers();
+}
+
+function renderNumbers() {
+  numbers.innerHTML="";
+  readData("numbers").forEach((x,i)=>{
+    const div=document.createElement("div");div.className="item";
+    const info=document.createElement("div");
+    info.textContent=x.name+" — "+x.value;
+    const del=document.createElement("button");del.className="delete";
+    del.textContent="Delete";
+    del.onclick=()=>{
+      const data=readData("numbers");data.splice(i,1);
+      writeData("numbers",data);renderNumbers();
+    };
+    div.append(info,del);numbers.append(div);
+  });
+}
+
+function addNote() {
+  const title=noteTitle.value.trim();
+  const text=noteText.value.trim();
+  if(!title||!text)return alert("Enter title and note.");
+  const data=readData("notes");
+  data.push({title,text});
+  try {writeData("notes",data);}
+  catch {return alert("Browser storage is full.");}
+  noteTitle.value="";noteText.value="";
+  renderNotes();
+}
+
+function renderNotes() {
+  notes.innerHTML="";
+  readData("notes").forEach((x,i)=>{
+    const div=document.createElement("div");div.className="item";
+    const info=document.createElement("div");
+    const strong=document.createElement("b");strong.textContent=x.title;
+    const small=document.createElement("small");small.textContent=x.text;
+    info.append(strong,small);
+    const del=document.createElement("button");del.className="delete";
+    del.textContent="Delete";
+    del.onclick=()=>{
+      const data=readData("notes");data.splice(i,1);
+      writeData("notes",data);renderNotes();
+    };
+    div.append(info,del);notes.append(div);
+  });
+}
+
+function saveImages() {
+  const selected=[...images.files];
+  if(!selected.length)return alert("Choose images first.");
+  let count=0;
+  selected.forEach(file=>{
+    if(!file.type.startsWith("image/"))return;
+    addRecord("images",{name:file.name,type:file.type,blob:file},()=>{
+      count++;
+      if(count===selected.length)renderImages();
+    });
+  });
+  images.value="";
+}
+
+function renderImages() {
+  getRecords("images",data=>{
+    gallery.innerHTML="";
+    data.forEach(x=>{
+      const div=document.createElement("div");div.className="photo";
+      const img=document.createElement("img");
+      const url=URL.createObjectURL(x.blob);
+      img.src=url;
+      const p=document.createElement("p");p.textContent=x.name;
+      const del=document.createElement("button");
+      del.className="delete";del.textContent="Delete";
+      del.onclick=()=>deleteRecord("images",x.id,renderImages);
+      div.append(img,p,del);gallery.append(div);
+    });
+    galleryMore.classList.toggle("hidden",data.length<=10);
+  });
+}
+
+function toggleGallery() {
+  gallery.classList.toggle("hidden");
+  galleryMore.textContent=gallery.classList.contains("hidden")?"Show Gallery":"Hide Gallery";
+}
+
+function saveFiles() {
+  const selected=[...files.files];
+  if(!selected.length)return alert("Choose files first.");
+  let done=0;
+  selected.forEach(file=>{
+    addRecord("files",{name:file.name,type:file.type,blob:file},()=>{
+      done++;
+      if(done===selected.length)renderFiles();
+    });
+  });
+  files.value="";
+}
+
+function renderFiles() {
+  getRecords("files",data=>{
+    fileList.innerHTML="";
+    data.forEach(x=>{
+      const div=document.createElement("div");div.className="item";
+      const info=document.createElement("div");
+      const a=document.createElement("a");
+      const url=URL.createObjectURL(x.blob);
+      a.href=url;a.download=x.name;a.textContent="⬇ "+x.name;
+      info.append(a);
+      const del=document.createElement("button");
+      del.className="delete";del.textContent="Delete";
+      del.onclick=()=>deleteRecord("files",x.id,renderFiles);
+      div.append(info,del);fileList.append(div);
+    });
+  });
+}
+
+function renderAll() {
+  renderLinks();renderNumbers();renderNotes();
+  renderImages();renderFiles();
+}
+</script>
 </body>
 </html>
